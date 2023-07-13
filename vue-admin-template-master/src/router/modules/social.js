@@ -1,6 +1,7 @@
 import Layout from '@/layout'
 export default {
   path: '/social',
+  name: 'social',
   component: Layout,
   children: [
     {
@@ -8,7 +9,7 @@ export default {
       name: 'social',
       component: () => import('@/views/social/index'),
       meta: {
-        icon: '',
+        icon: 'table',
         title: '社保管理'
       }
     }

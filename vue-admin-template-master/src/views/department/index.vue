@@ -8,7 +8,7 @@
           </el-col>
           <el-col :span="4">
             <span>{{ data.name }}</span> |
-            <el-dropdown @command="addDerg">
+            <el-dropdown @command="addDerg($event, data.id)">
               <span class="el-dropdown-link">
                 操作<i class="el-icon-arrow-down el-icon--right" />
               </span>
@@ -25,7 +25,7 @@
       </template>
     </el-tree>
 
-    <add-derg :showDialog.sync="showDialog" />
+    <add-derg ref="adddept" :showDialog.sync="showDialog" :currentNodeId="currentNodeId" @updatedepart="getlist" />
   </div>
 </template>
 
@@ -37,7 +37,8 @@ export default {
     return {
       datas: [],
       defaultProps: { label: 'name', children: 'children' },
-      showDialog:false
+      showDialog: false,
+      currentNodeId: null
     }
   },
   created() {
@@ -57,13 +58,20 @@ export default {
     },
     async getlist() {
       const res = await departmentApi()
-      console.log(res)
       this.datas = this.transListToTree(res.data, 0)
-      console.log(this.datas)
     },
-    addDerg(type) {
+    addDerg(type, id) {
       if (type === 'add') {
         this.showDialog = true
+        this.currentNodeId = id
+
+      } else if (type === 'update') {
+        this.showDialog = true
+        this.currentNodeId = id
+        console.log(this.$refs.adddept)
+        this.$nextTick(()=>{
+          this.$refs.adddept.updatedepartment()
+        })
       }
     }
   },

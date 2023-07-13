@@ -1,11 +1,12 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-// import { resetRouter } from "@/router"
+import { constantRoutes } from "@/router"
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    userInfo: {}
+    userInfo: {},
+    routes: constantRoutes
   }
 }
 
@@ -22,6 +23,9 @@ const mutations = {
   },
   getInfo(state, info) {
     state.userInfo = info
+  },
+  setRoutes(state, newRoutes) {
+    state.routes = [...constantRoutes, ...newRoutes]
   }
 }
 
@@ -29,20 +33,19 @@ const actions = {
 
   async login(contxt, loginfrom) {
     const res = await login(loginfrom)
-    console.log(res)
     contxt.commit('setToken', res.data)
   },
-
-  async userInfo({ commit }) {
-    const res = await getInfo()
-    console.log(res)
-    commit('getInfo', res.data)
-  },
-
   async logout({ commit }) {
     commit('removeToken')
     commit('getInfo', {})
-  }
+  },
+  async userInfo({ commit }) {
+    const res = await getInfo()
+    // 存储 用户资料
+    commit('getInfo', res.data)
+    // 用于拿到权限标识
+    return res.data
+  },
 }
 
 export default {

@@ -20,7 +20,7 @@
             <el-checkbox v-model="loginForm.isAgree">请勾选用户协议</el-checkbox>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" >立即登录</el-button>
+            <el-button type="primary" @click="submitForm('loginForm')">立即登录</el-button>
           </el-form-item>
         </el-form>
       </div>

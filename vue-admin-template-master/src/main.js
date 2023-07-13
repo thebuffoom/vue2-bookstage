@@ -15,6 +15,16 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 自动定义指令  按钮鉴权
+Vue.directive('permission',{
+  inserted(el,binding){
+    const points  =store.state.user.userInfo?.roles?.points
+    if (!points.includes(binding.value)){
+      el.remove()      
+    }
+    
+  }
+})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -41,3 +51,4 @@ new Vue({
   store,
   render: h => h(App)
 })
+
